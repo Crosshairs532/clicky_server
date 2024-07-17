@@ -102,10 +102,18 @@ const deleteService = async (id: any) => {
   return result
 }
 
+const addService = async (data: any) => {
+  console.log(data)
+
+  const result = await productModel.create(data)
+  return result
+}
+
 export const productService = {
   getAllProductService,
   getSingleProductService,
   placeOrderService,
   updateService,
   deleteService,
+  addService,
 }

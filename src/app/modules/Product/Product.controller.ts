@@ -62,10 +62,20 @@ const deleteController = catchAsynch(async (req, res) => {
   })
 })
 
+const addController = catchAsynch(async (req, res) => {
+  const body = req.body
+  const result = await productService.addService(body)
+  res.status(200).json({
+    message: 'product added successfully',
+    data: result,
+  })
+})
+
 export const productController = {
   getAllProductsController,
   getSingleController,
   placeOrderController,
   updatecontroller,
   deleteController,
+  addController,
 }

@@ -12,6 +12,10 @@ const productShema = new Schema<TProduct>(
     rating: { type: Number, required: true },
     description: { type: String, required: true },
     add_to_cart_button: { type: String, required: true },
+    isDeleted: {
+      type: String,
+      default: 'false',
+    },
   },
   {
     timestamps: true,
