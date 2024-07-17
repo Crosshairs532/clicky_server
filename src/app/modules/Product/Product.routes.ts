@@ -3,6 +3,9 @@ import { productController } from './Product.controller'
 
 const route = Router()
 
-route.use('/', productController.getAllProductsController)
-
+route.get('/single/:id', productController.getSingleController)
+route.get('/', productController.getAllProductsController)
+route.patch('/payment', productController.placeOrderController)
+route.put('/update/:id', productController.updatecontroller)
+route.delete('/delete/:id', productController.deleteController)
 export const productRoute = route

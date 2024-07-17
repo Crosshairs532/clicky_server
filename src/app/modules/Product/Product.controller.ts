@@ -15,4 +15,57 @@ const getAllProductsController = catchAsynch(
     res.status(200).json(result)
   },
 )
-export const productController = { getAllProductsController }
+
+const getSingleController = catchAsynch(async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const result = await productService.getSingleProductService(id)
+  res.status(200).json(result)
+})
+
+const placeOrderController = catchAsynch(
+  async (req: Request, res: Response) => {
+    const updatedDocument = req.body
+    const result = await productService.placeOrderService(updatedDocument)
+    if (result) {
+      res.status(200).json({ order: 'order placed successfully' })
+    } else {
+      res.status(400).json('something went wrong')
+    }
+  },
+)
+
+const updatecontroller = catchAsynch(async (req, res) => {
+  const { id } = req.params
+  const updatedDocument = req.body
+  console.log(id)
+  try {
+    const result = await productService.updateService({ id, updatedDocument })
+    res.status(200).json({
+      message: 'Product updated successfully',
+      data: result,
+    })
+  } catch (error: unknown) {
+    res.status(500).json({
+      message: 'Failed to update product',
+      error: error.message,
+    })
+  }
+})
+
+const deleteController = catchAsynch(async (req, res) => {
+  const { id } = req.params
+  const result = await productService.deleteService(id)
+  res.status(200).json({
+    message: 'product Deleted Successfully',
+    data: result,
+  })
+})
+
+export const productController = {
+  getAllProductsController,
+  getSingleController,
+  placeOrderController,
+  updatecontroller,
+  deleteController,
+}
