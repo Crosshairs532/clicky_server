@@ -3,13 +3,14 @@ import { TParams } from './Product.interface'
 import productModel from './Product.model'
 
 const getAllProductService = async (params: TParams) => {
-  const query = { ...params }
-  let filter: Record<string, unknown> = {}
-  let sort: { price: number } = { price: 1 }
-  // console.log({ params })
+  let filter: Record<string, unknown> = { isDeleted: 'false' }
+  let sort: { createdAt: number; isDeleted: number } = {
+    isDeleted: 1,
+    createdAt: -1,
+  }
+  console.log(params)
   if (params) {
     if (params.productName) {
-      // console.log('productName')
       filter = {
         ...filter,
         $or: [
@@ -24,13 +25,12 @@ const getAllProductService = async (params: TParams) => {
     }
     if (params.sort) {
       if (params.sort === 'low') {
-        sort = { price: 1 }
+        sort = { ...sort, price: 1 }
       } else {
-        sort = { price: -1 }
+        sort = { ...sort, price: -1 }
       }
     }
-    if (params.maxPrice || params.minPrice) {
-      // console.log('price')
+    if (params.maxPrice >= 0 || params.minPrice >= 0) {
       filter = {
         ...filter,
         $and: [
@@ -40,8 +40,9 @@ const getAllProductService = async (params: TParams) => {
       }
     }
   }
-
+  console.log(filter, 'filter')
   const result = await productModel.find(filter).sort(sort)
+  console.log(result, 'res')
   return result
 }
 
@@ -96,8 +97,8 @@ const updateService = async (data: any) => {
 }
 
 const deleteService = async (id: any) => {
-  const result = await productModel.findByIdAndDelete(id, {
-    isDeleted: true,
+  const result = await productModel.findByIdAndUpdate(id, {
+    isDeleted: 'true',
   })
   return result
 }

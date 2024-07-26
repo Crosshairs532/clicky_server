@@ -8,6 +8,7 @@ export type TProduct = {
   rating: number
   description: string
   add_to_cart_button: string
+  isDeleted?: string
 }
 
 export type TParams = {
